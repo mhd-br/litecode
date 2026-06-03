@@ -4,7 +4,7 @@ export const toolCallArgsSchema = z.record(z.string(), z.json());
 
 export const messagePartSchema = z.discriminatedUnion("type", [
   z.object({
-    type: z. literal("reasoning"),
+    type: z.literal("reasoning"),
     text: z.string(),
   }),
   z.object({
