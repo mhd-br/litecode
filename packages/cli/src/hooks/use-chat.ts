@@ -124,7 +124,7 @@ export function useChat(sessionId: string, initialMessages: Message[]) {
         interrupted: true,
       }
     ]);
-  }, [])
+  }, [updateMessages])
 
   const clearStream = useCallback(
     (requestId: string) => {
