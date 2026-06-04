@@ -1,5 +1,7 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
+
 import {
   findSupportedChatModel,
   type SupportedChatModel,
@@ -62,6 +64,14 @@ function resolveAnthropicModel(modelId: AnthropicModelId): ResolvedModel {
   };
 };
 
+function resolveGoogleModel(modelId: GeminiModelId): ResolvedModel {
+  return {
+    model: google(modelId),
+    provider: "google",
+    modelId,
+  };
+};
+
 function resolveOpenAIModel(modelId: OpenAIModelId): ResolvedModel {
   return {
     model: openai(modelId),
@@ -79,6 +89,8 @@ function resolveSupportedChatModel(model: SupportedChatModel): ResolvedModel {
       return resolveAnthropicModel(model.id);
     case "openai":
       return resolveOpenAIModel(model.id);
+     case "google":
+    return resolveGoogleModel(model.id);
     default:
       return assertUnsupportedProvider(provider);
   }

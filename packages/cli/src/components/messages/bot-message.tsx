@@ -4,17 +4,20 @@ import { useTheme } from "../../providers/theme";
 // import type { Message } from "../../hooks/use-chat";
 // import { Mode, type ModeType } from "@nightcode/shared";
 import { TextAttributes } from "@opentui/core";
+import type { ClientMessagePart } from "../../hooks/use-chat";
+import { Mode } from "@litecode/database/enums";
 
 // type ClientMessagePart = Message["parts"][number];
 // type ToolPart = Extract<ClientMessagePart, { type: `tool-${string}` | "dynamic-tool" }>;
 
 type Props = {
-  // parts: ClientMessagePart[];
+  parts: ClientMessagePart[];
   model: string;
-  // mode: ModeType;
-  content: string;
-  // durationMs?: number;
-  // streaming?: boolean;
+  mode: Mode;
+  // content: string;
+  duration?: string;
+  streaming?: boolean;
+  interrupted?: boolean;
 };
 
 // function formatToolName(name: string): string {
@@ -59,26 +62,56 @@ type Props = {
 // };
 
 export function BotMessage({ 
-  // parts,
+  parts,
   model,
-  content,
-  // mode,
-  // durationMs,
-  // streaming = false,
+  // content,
+  mode,
+  duration,
+  streaming = false,
+  interrupted = false
 }: Props) {
   const { colors } = useTheme();
+  const text = parts
+    .filter((p) => p.type === "text")
+    .map((p) => p.text)
+    .join("");
+    
   return (
     <box width="100%" alignItems="center">
       <box paddingY={1} width="100%">
         <box paddingX={3} width="100%">
-          <text>{content}</text>
+          <text>{text}</text>
         </box>
       </box>
 
       <box paddingY={3} paddingBottom={1} gap={1} width="100%">
         <box flexDirection="row" gap={2}>
-          <text fg={colors.primary}>&#9673;</text>
-          <text>{model}</text>
+          {/* <text fg={mode === Mode.PLAN ? colors.planMode : colors.primary}>&#9673;</text> */}
+          <text
+            attributes={interrupted ? TextAttributes.DIM : 0}
+            fg={interrupted ? undefined : mode === Mode.PLAN ? colors.planMode : colors.primary}
+          >
+            &#9673;
+          </text>
+          <box flexDirection="row" gap={1}>
+            <text attributes={interrupted ? TextAttributes.DIM : 0}>
+              {mode === Mode.PLAN ? "Plan" : "Build"}
+            </text>
+            <text attributes={TextAttributes.DIM} fg={colors.dimSeparator}>
+              &gt;
+            </text>
+            <text attributes={TextAttributes.DIM}>{model}</text>
+            {(duration || interrupted) && (
+              <>
+                <text attributes={TextAttributes.DIM} fg={colors.dimSeparator}>
+                  &gt;
+                </text>
+                <text attributes={TextAttributes.DIM}>
+                  {interrupted ? "interrupted" : duration}
+                </text>
+              </>
+            )}
+          </box>
         </box>
       </box>
     </box>
