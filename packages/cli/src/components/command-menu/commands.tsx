@@ -1,4 +1,10 @@
-import { ThemeDialogContent } from "../dialogs";
+import { SUPPORTED_CHAT_MODELS } from "@litecode/shared";
+import { 
+  SessionsDialogContent,
+  ThemeDialogContent,
+  AgentsDialogContent,
+  ModelsDialogContent,
+} from "../dialogs";
 import type { Command } from "./types";
 
 export const COMMANDS: Command[] = [
@@ -6,9 +12,9 @@ export const COMMANDS: Command[] = [
     name: "new",
     description: "Start a new conversation",
     value: "/new",
-    // action: (ctx) => {
-    //   ctx.navigate("/");
-    // },
+    action: (ctx) => {
+      ctx.navigate("/");
+    },
   },
   {
     name: "agents",
@@ -17,8 +23,7 @@ export const COMMANDS: Command[] = [
     action: (ctx) => {
       ctx.dialog.open({
         title: "Select Agent",
-        children: <text>Agent selection</text>
-        // children: <AgentsDialogContent currentMode={ctx.mode} onSelectMode={ctx.setMode} />,
+        children: <AgentsDialogContent currentMode={ctx.mode} onSelectMode={ctx.setMode} />,
       })
     },
   },
@@ -29,13 +34,12 @@ export const COMMANDS: Command[] = [
     action: (ctx) => {
       ctx.dialog.open({
         title: "Select Model",
-        children: <text>Models selections</text>
-        // children: (
-        //   <ModelsDialogContent
-        //     models={SUPPORTED_CHAT_MODELS.map((model) => model.id)}
-        //     onSelectModel={ctx.setModel}
-        //   />
-        // ),
+        children: (
+          <ModelsDialogContent
+            models={SUPPORTED_CHAT_MODELS.map((model) => model.id)}
+            onSelectModel={ctx.setModel}
+          />
+        ),
       })
     },
   },
@@ -43,12 +47,12 @@ export const COMMANDS: Command[] = [
     name: "sessions",
     description: "Browse past sessions",
     value: "/sessions",
-    // action: (ctx) => {
-    //   ctx.dialog.open({
-    //     title: "Sessions",
-    //     children: <SessionsDialogContent />,
-    //   })
-    // },
+    action: (ctx) => {
+      ctx.dialog.open({
+        title: "Sessions",
+        children: <SessionsDialogContent />,
+      })
+    },
   },
   {
     name: "theme",
