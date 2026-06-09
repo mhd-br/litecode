@@ -77,7 +77,7 @@ export const SUPPORTED_CHAT_MODELS = [
     },
   },
   {
-    id: "gemini-3.1-pro",
+    id: "gemini-3.1-pro-preview",
     provider: "google",
     pricing: {
       inputUsdPerMillionTokens: 2,
@@ -93,4 +93,4 @@ export function findSupportedChatModel(modelId: string) {
   return SUPPORTED_CHAT_MODELS.find((model) => model.id === modelId);
 }
 
-export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "gemini-3.1-flash-lite";
+export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "gemini-3.5-flash";
