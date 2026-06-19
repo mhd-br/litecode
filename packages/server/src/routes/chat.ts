@@ -3,7 +3,8 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import {
   // convertToModelMessages,
-  streamText as aiStreamText
+  streamText as aiStreamText,
+  stepCountIs
   // validateUIMessages,
   // type InferUITools,
   // type LanguageModelUsage,
@@ -18,6 +19,8 @@ import {
   type MessagePart,
   messagePartsSchema
 } from "@litecode/shared";
+import { createTools } from "../tools";
+import { buildSystemPrompt } from "../system-prompt";
 // import { buildSystemPrompt } from "../system-prompt";
 // import type { AuthenticatedEnv } from "../middleware/require-auth";
 // import { requireCreditsBalance } from "../middleware/require-credits-balance";
@@ -89,6 +92,7 @@ function getResumableUserMessage(
 type StreamParams = {
   sessionId: string;
   model: string;
+  cwd: string | null;
   history: { role: "user" | "assistant"; content: string }[];
   mode: Mode;
   abortController: AbortController;
@@ -98,8 +102,9 @@ async function streamAIResponse(
   stream: Parameters<Parameters<typeof streamSSE>[1]>[0],
   params: StreamParams,
 ) {
-  const { sessionId, model, history, mode, abortController } = params;
+  const { sessionId, model, cwd, history, mode, abortController } = params;
   const startTime = Date.now();
+  const tools = cwd ? createTools(cwd, mode) : undefined;
   const parts: MessagePart[] = [];
   const resolvedModel = resolveChatModel(model);
 
@@ -134,7 +139,10 @@ async function streamAIResponse(
   try {
     const result = aiStreamText({
       model: resolvedModel.model,
+      system: buildSystemPrompt({ cwd, mode }),
       messages: history,
+      tools,
+      stopWhen: tools ? stepCountIs(50) : undefined,
       abortSignal: abortController.signal,
       providerOptions: resolvedModel.providerOptions,
     });
@@ -316,6 +324,7 @@ const app = new Hono()
             await streamAIResponse(stream, {
               sessionId,
               model: resumableMessage.model,
+              cwd: session.cwd,
               history,
               mode: resumableMessage.mode,
               abortController,
@@ -386,6 +395,7 @@ const app = new Hono()
         await streamAIResponse(stream, {
           sessionId,
           model: data.model,
+          cwd: session.cwd,
           history,
           mode: data.mode,
           abortController,
