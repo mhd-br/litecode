@@ -1,17 +1,10 @@
 // import prettyMs from "pretty-ms";
 import { EmptyBorder } from "../border";
 import { useTheme } from "../../providers/theme";
-// import type { Message } from "../../hooks/use-chat";
-// import { Mode, type ModeType } from "@nightcode/shared";
 import { TextAttributes } from "@opentui/core";
 
 type Props = {
   message: string;
-  // parts: ClientMessagePart[];
-  // model: string;
-  // mode: ModeType;
-  // durationMs?: number;
-  // streaming?: boolean;
 };
 
 

@@ -146,7 +146,7 @@ export function InputBar({ onSubmit, disabled = false }: Props) {
     [resolveCommand, handleCommand],
   );
 
-  // Register the base layer responder for ctrl+c dismissal
+  // register the base layer responder for ctrl+c dismissal
   useEffect(() => {
     setResponder("base", () => {
       if (disabled) return false;

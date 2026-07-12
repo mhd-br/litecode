@@ -34,7 +34,7 @@ function persistTheme(theme: Theme) {
       "utf8",
     );
   } catch {
-    // Ignore preference write failures so theme switching still works for this session.
+    // ignore preference write failures so theme switching still works for this session.
   }
 };
 

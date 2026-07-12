@@ -119,16 +119,6 @@ function SessionChat({
     }
   });
 
-  // useEffect(() => {
-  //   if (!initialPrompt || hasSubmittedInitialPromptRef.current) return;
-  //   hasSubmittedInitialPromptRef.current = true;
-  //   void submit({
-  //     userText: initialPrompt.message,
-  //     mode: initialPrompt.mode,
-  //     model: initialPrompt.model,
-  //   });
-  // }, [initialPrompt, submit]);
-
   return (
     <SessionShell
       onSubmit={(text) => submit({ userText: text, mode, model })}

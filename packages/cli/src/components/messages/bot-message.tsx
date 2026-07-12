@@ -1,8 +1,6 @@
 // import prettyMs from "pretty-ms";
 import { EmptyBorder } from "../border";
 import { useTheme } from "../../providers/theme";
-// import type { Message } from "../../hooks/use-chat";
-// import { Mode, type ModeType } from "@nightcode/shared";
 import type { ClientMessagePart, ClientToolCallPart } from "../../hooks/use-chat";
 import { TextAttributes } from "@opentui/core";
 import { Mode } from "@litecode/database/enums";
@@ -11,7 +9,6 @@ type Props = {
   parts: ClientMessagePart[];
   model: string;
   mode: Mode;
-  // content: string;
   duration?: string;
   streaming?: boolean;
   interrupted?: boolean;
@@ -56,7 +53,6 @@ function groupConsecutiveParts(parts: ClientMessagePart[]): PartGroup[] {
 export function BotMessage({ 
   parts,
   model,
-  // content,
   mode,
   duration,
   streaming = false,

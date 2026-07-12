@@ -63,7 +63,7 @@ export function KeyboardLayerProvider({ children }: { children: React.ReactNode 
     }
   }, []);
 
-  // Single ctrl+c handler that walks the responder chain
+  // single ctrl+c handler that walks the responder chain
   useKeyboard((key) => {
     if (!key.ctrl || key.name !== "c") return;
 
@@ -76,7 +76,6 @@ export function KeyboardLayerProvider({ children }: { children: React.ReactNode 
       }
     };
 
-    // No responder handled it — exit
     renderer.destroy();
   });
 
